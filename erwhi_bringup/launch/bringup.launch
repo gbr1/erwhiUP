@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<launch>
+	<!-- motors control uNAV-->
+	<include file="$(find erwhi_bringup)/launch/include/driver.launch">
+	</include>
+
+	<!-- control -->
+	<include file="$(find erwhi_control)/launch/control.launch">
+	</include>
+
+	<!-- realsense --> 
+	<!--<include file="$(find erwhi_bringup)/launch/include/zr300.launch">
+	</include>-->
+	<include file="$(find realsense_camera)/launch/zr300_nodelet_rgbd.launch">
+	</include>
+	<node name="depthimage_to_laserscan" type="depthimage_to_laserscan" pkg="depthimage_to_laserscan">
+		<remap from="image" to="/camera/depth/image_raw" />
+		<remap from="camera_info" to="/camera/depth/camera_info" />
+		<!--<remap from="scan" to="/camera/scan" />-->
+	</node>
+
+
+
+	<include file="$(find erwhi_bringup)/launch/include/fake_odom.launch">
+	</include>
+
+	<!-- diagnostic -->
+	<include file="$(find erwhi_bringup)/launch/include/diagnostic.launch">
+	</include>
+	
+</launch>

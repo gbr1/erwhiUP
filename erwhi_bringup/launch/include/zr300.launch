@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<launch>
+	<!-- start realsense -->
+	<arg name="manager" default="realsense_ros_camera_manager"/>
+	<include file="$(find erwhi_bringup)/../../realsense_samples_ros/realsense_ros_camera/launch/camera.launch">
+		<arg name="manager" value="$(arg manager)"/>
+    	<arg name="fisheye_width" value="640"/>
+    	<arg name="fisheye_height" value="480"/>
+    	<arg name="enable_fisheye" value="true"/>
+    	<arg name="depth_width" value="320"/>
+    	<arg name="depth_height" value="240"/>
+    	<arg name="enable_depth" value="true"/>
+		<arg name="color_width" value="320"/>
+    	<arg name="color_height" value="240"/>
+    	<arg name="enable_color" value="true"/>
+	</include>
+
+	<!-- laser scan -->
+	<!--
+	<node name="depthimage_to_laserscan" type="depthimage_to_laserscan" pkg="depthimage_to_laserscan">
+		<remap from="image" to="/camera/depth/image_raw" />
+		<remap from="camera_info" to="/camera/depth/camera_info" />-->
+		<!--<remap from="scan" to="/camera/scan" />-->
+	<!--</node>-->
+	
+
+
+	
+	
+</launch>

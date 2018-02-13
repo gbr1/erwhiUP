@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+
+<robot name="erwhi">
+	<!-- Base link position -->
+	<link name="base_link">
+		<visual>
+			<!-- <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.06" /> -->
+			<origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.06"/>
+			<geometry>
+				<cylinder length="0.06" radius="0.07" />
+			</geometry>
+			<material name="blue">
+				<color rgba="0 0 1 0.5"/>
+			</material>
+		</visual>
+	</link>
+	<!-- Left wheel link -->
+	<link name="left_wheel">
+		<visual>
+			<geometry>
+			<!--	<cylinder length="0.01" radius="0.0730250"/> -->
+				<cylinder length="0.01" radius="0.0365125"/>
+			</geometry>
+			<material name="black">
+				<color rgba="0 0 0 1"/>
+			</material>
+		</visual>
+    <collision>
+      <geometry>
+        <!-- <cylinder length="0.01" radius="0.0730250"/> -->
+	<cylinder length="0.01" radius="0.0365125"/>
+      </geometry>
+    </collision>
+	</link>
+	<!-- Joint configuration left joint -->
+	<joint name="left_joint" type="continuous">
+		<axis xyz="0 0 -1"/>
+		<parent link="base_link"/>
+		<child link="left_wheel"/>
+		<origin rpy="1.57075 0.0 0.0" xyz="0 0.07 0.0365125"/>
+		<limit effort="2" velocity="10"/>
+		<joint_properties damping="0.02" friction="0.04"/>
+	</joint>
+	<!-- Transmission configuration left joint -->
+	<transmission name="$left_trans" type="SimpleTransmission">
+		<type>transmission_interface/SimpleTransmission</type>
+		<actuator name="$left_motor">
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+		<joint name="left_joint">
+			<hardwareInterface>VelocityJointInterface</hardwareInterface>
+		</joint>
+	</transmission>
+
+	<!-- Right wheel link -->
+	<link name="right_wheel">
+		<visual>
+			<geometry>
+			<!--	<cylinder length="0.01" radius="0.0730250"/> -->
+				<cylinder length="0.01" radius="0.0365125"/>
+			</geometry>
+			<material name="black">
+				<color rgba="0 0 0 1"/>
+			</material>
+		</visual>
+    <collision>
+      <geometry>
+        <!-- <cylinder length="0.01" radius="0.0730250"/> -->
+	<cylinder length="0.01" radius="0.0365125"/>
+      </geometry>
+    </collision>
+	</link>
+	<!-- Joint configuration left joint -->
+	<joint name="right_joint" type="continuous">
+		<axis xyz="0 0 -1"/>
+		<parent link="base_link"/>
+		<child link="right_wheel"/>
+		<origin rpy="1.57075 0.0 0.0" xyz="0 -0.07 0.0365125"/>
+		<limit effort="2" velocity="10"/>
+		<joint_properties damping="0.02" friction="0.04"/>
+	</joint>
+	<!-- Transmission configuration right joint -->
+	<transmission name="$right_trans" type="SimpleTransmission">
+		<type>transmission_interface/SimpleTransmission</type>
+		<actuator name="$right_motor">
+			<mechanicalReduction>1</mechanicalReduction>
+		</actuator>
+		<joint name="right_joint">
+			<hardwareInterface>VelocityJointInterface</hardwareInterface>
+		</joint>
+	</transmission>
+
+
+<!-- realsense ZR300 tf -->
+	<link name="camera_link">
+		<visual>
+			<geometry>
+				<box size="0.01 0.155 0.035" />
+			</geometry>
+			<material name="black">
+				<color rgba="0 0 0 1"/>
+			</material>
+		</visual>
+		<collision>
+			<geometry>
+				<box size="0.01 0.155 0.035" />
+			</geometry>
+		</collision>
+	</link>
+
+	<joint name="camera_joint" type="fixed">
+		<parent link="base_link"/>
+		<child link="camera_link"/>
+		<origin rpy="0.0 0.0 0.0" xyz="0.06 0.00 0.095"/>
+	</joint>
+
+	<joint name="camera_rgb_joint" type="fixed">
+      <origin xyz="-0.003 -0.029 0.028" rpy="0 0 0"/>
+      <parent link="camera_link"/>
+      <child link="camera_rgb_frame" />
+    </joint>
+    <link name="camera_rgb_frame"/>
+
+    <joint name="camera_rgb_optical_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="-1.57 0 -1.57" />   <!-- -1.57 0 -1.57 -->
+      <parent link="camera_rgb_frame" />
+      <child link="camera_rgb_optical_frame" />
+    </joint>
+    <link name="camera_rgb_optical_frame"/>
+
+	<joint name="camera_depth_joint" type="fixed">
+      <origin xyz="0 0.023 0" rpy="0 0 0" />
+      <parent link="camera_rgb_frame" />
+      <child link="camera_depth_frame" />
+    </joint>
+    <link name="camera_depth_frame"/>
+
+    <joint name="camera_depth_optical_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="-1.57 0 -1.57" />
+      <parent link="camera_depth_frame" />
+      <child link="camera_depth_optical_frame" />
+    </joint>
+    <link name="camera_depth_optical_frame"/>
+   
+
+    <!-- camera fisheye joints and links -->
+    <joint name="camera_fisheye_joint" type="fixed">
+      <origin xyz="0 0.088 0" rpy="0 0 0" />
+      <parent link="camera_rgb_frame" />
+      <child link="camera_fisheye_frame" />
+    </joint>
+    <link name="camera_fisheye_frame"/>
+
+    <joint name="camera_fisheye_optical_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="-1.57 0 -1.57" />
+      <parent link="camera_fisheye_frame" />
+      <child link="camera_fisheye_optical_frame" />
+    </joint>
+    <link name="camera_fisheye_optical_frame"/>
+
+
+	
+</robot>
